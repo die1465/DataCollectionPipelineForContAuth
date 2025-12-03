@@ -1,0 +1,24 @@
+# my_ai_project/docker-compose.yml
+
+services:
+  db:
+    image: postgres:15 # Use a specific, stable PostgreSQL version
+    restart: always # Keep the DB running even if it crashes
+    ports:
+      # Map the container's PostgreSQL port (5432) to a port on your host.
+      # You can choose any available port on your host, e.g., 5432 or 5433.
+      # For localhost access, 5432 is standard.
+      - "5432:5432"
+    environment:
+      # Use environment variables for sensitive data, ideally loaded from a .env file
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+      POSTGRES_USER: ${POSTGRES_USER:-myuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
+    volumes:
+      # This creates a Docker named volume to persist your database data.
+      # Data will survive container recreation.
+      - pgdata:/var/lib/postgresql/data
+
+# Define the named volume
+volumes:
+  pgdata:

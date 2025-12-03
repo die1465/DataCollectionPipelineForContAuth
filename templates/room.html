@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-wrapper">
+  <h1>Record all sensors for an activity</h1>
+
+  <div class="message-box">
+    <h2>Chat Room: {{ code }}</h2>
+    <div class="messages" id="messages"></div>
+    <div class="inputs chat-input">
+      <textarea rows="3" placeholder="Message" name="message" id="message"></textarea>
+      <button type="button" id="send-btn" onClick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <div class="inputs recording-input">
+    <textarea rows="3" placeholder="Activity Name" name="activityMessage" id="activityMessage"></textarea>
+    <button type="button" onClick="sendActivityMessage()">Start recording</button>
+    <button type="button" onClick="sendStopActivityMessage()">Stop recording</button>
+  </div>
+
+  <!-- Participant survey form placed at the bottom -->
+  <form method="post" action="/questionnaire" class="survey-form" id="surveyForm">
+    <input type="hidden" id="userIDField" name="userID" value="">
+    <h2>Participant Information</h2>
+
+    <div class="form-group">
+      <label for="age">1. Age:</label>
+      <input type="number" id="age" name="age" min="0" required/>
+    </div>
+
+    <div class="form-group">
+      <p>2. Gender:</p>
+      <label><input type="radio" name="gender" value="Male" required> Male</label>
+      <label><input type="radio" name="gender" value="Female" > Female</label>
+    </div>
+
+    <div class="form-group">
+      <p>3. Education (check all that apply):</p>
+      <label><input type="checkbox" name="education" value="high_school_completed" > Completed high school</label><br>
+      <label><input type="checkbox" name="education" value="bachelors_in_progress" > Bachelors degree (in progress)</label><br>
+      <label><input type="checkbox" name="education" value="masters_in_progress" > Masters degree (in progress)</label><br>
+      <label><input type="checkbox" name="education" value="phd_in_progress" > PhD (in progress)</label><br>
+      <label><input type="checkbox" name="education" value="bachelors_completed" > Bachelors degree (completed)</label><br>
+      <label><input type="checkbox" name="education" value="masters_completed" > Masters degree (completed)</label><br>
+      <label><input type="checkbox" name="education" value="phd_completed" > PhD (completed)</label>
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="field_of_study">4. Field of study:</label>
+      <input type="text" id="field_of_study" name="field_of_study" required>
+    </div>
+<br>
+    <div class="form-group">
+      <label for="occupation">5. Occupation:</label>
+      <input type="text" id="occupation" name="occupation" required>
+    </div>
+
+    <div class="form-group">
+      <p>6. Primary browser (indicate version):</p>
+      <label><input type="radio" name="primary_browser" value="Firefox"> Mozilla Firefox <input type="text" name="primary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="primary_browser" value="Chrome" > Google Chrome <input type="text" name="primary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="primary_browser" value="IE"> Microsoft Edge <input type="text" name="primary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="primary_browser" value="Safari"> Safari <input type="text" name="primary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="primary_browser" value="Other"> Other <input type="text" name="primary_browser_version" placeholder="browser & version" size="15"></label>
+    </div>
+
+    <div class="form-group">
+      <p>7. Secondary browser(s) (indicate version):</p>
+      <label><input type="radio" name="secondary_browser" value="Firefox" > Mozilla Firefox <input type="text" name="secondary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="secondary_browser" value="Chrome"> Google Chrome <input type="text" name="secondary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="secondary_browser" value="IE"> Microsoft Edge <input type="text" name="secondary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="secondary_browser" value="Safari"> Safari <input type="text" name="secondary_browser_version" placeholder="version" size="6"></label><br>
+      <label><input type="radio" name="secondary_browser" value="Other"> Other <input type="text" name="secondary_browser_version" placeholder="browser & version" size="15"></label>
+    </div>
+
+    <div class="form-group">
+      <p>8. Operating System:</p>
+      <label><input type="checkbox" name="os" value="Windows"> Windows (version: <input type="text" name="os_version" placeholder="e.g. 10" size="6"></label><br>
+      <label><input type="checkbox" name="os" value="MacOS"> Mac OS X</label><br>
+      <label><input type="checkbox" name="os" value="Linux"> Linux (distro & version: <input type="text" name="os_version" placeholder="e.g. Ubuntu 20.04" size="15"></label><br>
+      <label><input type="checkbox" name="os" value="Other"> Other: <input type="text" name="os_version" placeholder="specify" size="15"></label>
+    </div>
+<br>
+    <div class="form-group">
+      <label for="hours_per_week">9. Approximate hours of computer usage per week:</label>
+      <input type="number" id="hours_per_week" name="hours_per_week" min="0" required>
+    </div>
+<br>
+    <div class="form-group">
+      <label for="primary_language">10. Primary language:</label>
+      <input type="text" id="primary_language" name="primary_language" required>
+    </div>
+<br>
+    <div class="form-group">
+      <label for="shop_online_frequency">11. How often do you shop online?</label>
+      <select id="shop_online_frequency" name="shop_online_frequency" required>
+        <option value="Never">Never</option>
+        <option value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Yearly">Yearly</option>
+      </select>
+    </div>
+<br>
+    <div class="form-group">
+      <label for="online_banking_frequency">12. How often do you use online banking?</label>
+      <select id="online_banking_frequency" name="online_banking_frequency" required>
+        <option value="Never">Never</option>
+        <option value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Yearly">Yearly</option>
+      </select>
+    </div>
+<br>
+    <fieldset class="form-group">
+      <legend>13. How often do you use the following web sites?</legend>
+      <div><label>eBay: <input type="radio"  required name="ebay_usage" value="Never">Never</label> <label><input type="radio" name="ebay_usage" value="Daily">Daily</label> <label><input type="radio" name="ebay_usage" value="Weekly">Weekly</label> <label><input type="radio" name="ebay_usage" value="Monthly">Monthly</label> <label><input type="radio" name="ebay_usage" value="Yearly">Yearly</label></div>
+      <div><label>Amazon: <input type="radio" name="amazon_usage" value="Never">Never</label> <label><input type="radio" name="amazon_usage" value="Daily">Daily</label> <label><input type="radio" name="amazon_usage" value="Weekly">Weekly</label> <label><input type="radio" name="amazon_usage" value="Monthly">Monthly</label> <label><input type="radio" name="amazon_usage" value="Yearly">Yearly</label></div>
+      <div><label>PayPal: <input type="radio" name="paypal_usage" value="Never">Never</label> <label><input type="radio" name="paypal_usage" value="Daily">Daily</label> <label><input type="radio" name="paypal_usage" value="Weekly">Weekly</label> <label><input type="radio" name="paypal_usage" value="Monthly">Monthly</label> <label><input type="radio" name="paypal_usage" value="Yearly">Yearly</label></div>
+      <div><label>Your bank: <input type="radio" name="bank_usage" value="Never">Never</label> <label><input type="radio" name="bank_usage" value="Daily">Daily</label> <label><input type="radio" name="bank_usage" value="Weekly">Weekly</label> <label><input type="radio" name="bank_usage" value="Monthly">Monthly</label> <label><input type="radio" name="bank_usage" value="Yearly">Yearly</label></div>
+    </fieldset>
+<br>
+    <fieldset class="form-group">
+      <legend>14. Have you ever…</legend>
+      <div><label>Installed an OS? <input type="radio"  required name="ever_installed_os" value="Yes">Yes</label> <label><input type="radio" name="ever_installed_os" value="No">No</label> <label><input type="radio" name="ever_installed_os" value="Not sure">Not sure</label></div>
+      <div><label>Designed a web site? <input type="radio" name="ever_designed_website" value="Yes">Yes</label> <label><input type="radio" name="ever_designed_website" value="No">No</label> <label><input type="radio" name="ever_designed_website" value="Not sure">Not sure</label></div>
+      <div><label>Registered a domain? <input type="radio" name="ever_registered_domain" value="Yes">Yes</label> <label><input type="radio" name="ever_registered_domain" value="No">No</label> <label><input type="radio" name="ever_registered_domain" value="Not sure">Not sure</label></div>
+      <div><label>Used Telnet or SSH? <input type="radio" name="ever_used_telnet_ssh" value="Yes">Yes</label> <label><input type="radio" name="ever_used_telnet_ssh" value="No">No</label> <label><input type="radio" name="ever_used_telnet_ssh" value="Not sure">Not sure</label></div>
+      <div><label>Changed your firewall settings? <input type="radio" name="ever_changed_firewall" value="Yes">Yes</label> <label><input type="radio" name="ever_changed_firewall" value="No">No</label> <label><input type="radio" name="ever_changed_firewall" value="Not sure">Not sure</label></div>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+  </form>
+
+</div> <!-- /.page-wrapper -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<script>
+  // Populate hidden userID field before the form submits
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof userID !== 'undefined') {
+      document.getElementById('userIDField').value = userID;
+    }
+  });
+</script>
+{% for msg in messages %}
+<script>createMessage("{{ msg.name }}","{{ msg.message }}");</script>
+{% endfor %}
+
+{% endblock %}

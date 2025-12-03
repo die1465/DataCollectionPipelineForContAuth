@@ -1,0 +1,14 @@
+flask
+flask-socketio
+flask-sqlalchemy
+python-dotenv
+sqlalchemy
+socketio
+librosa
+pandas
+werkzeug
+eventlet
+pydub
+psycopg2-binary
+librosa
+noisereduce
