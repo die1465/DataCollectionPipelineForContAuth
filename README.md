@@ -1,38 +1,5 @@
 # Data-Collection-Pipeline-For-Continuous-Authentication (Early Access)
 
-This was the data collection pipeline for WACWAC (Wearable Assisted Continuous Web Authentication through Multimodal Correlation)
-
-
-prerequisites:
-
-having docker desktop installed
-having uv installed
-
-
-
-to install dependencies:
-
-uv pip install -r requirements.lock
-
-
-for setting up the database:
-don't forget to configure the .env for the DB credentials
-
-we use a postgres DB in a docker container, to setup the DB:
-docker compose up -d db
-then uv run createDB.py to create the tables in the database
-
-
-
-
-The main.py is the web server
-
-the WatchServer.py is the watch API
-
-the Services.py is the preprocessing services API
-
-run watchServer and services before main.py
-
 # 💾 Data Collection Pipeline for Continuous Authentication
 
 This repository contains the data collection pipeline for WACWAC (Wearable Assisted Continuous Web Authentication through Multimodal Correlation).
