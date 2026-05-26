@@ -1,3 +1,4 @@
 ._*
 SessionsData/*
 .env
+__pycache__/
